@@ -1,43 +1,58 @@
-function shuffle(size){
+var isImageGenerated = false
+var imagePartTable = []
+var emptyPart
+function generatePuzzle(size){
+    if(isImageGenerated){
+        document.getElementById("area").innerHTML=" "
+        imagePartTable=[]
+    }
     var image = document.createElement("img")
     image.src = "zdjecie.png"
     var imageWidth = image.width
     var imageHeight = image.height
-    
-    var canvasList = []
-    
-    //document.body.appendChild(image)
-    
     var imagePartWidth = Math.floor(imageWidth/size)
     var imagePartHeight = Math.floor(imageHeight/size)
-    var area = document.createElement("div")
-    area.style.border = "1px black solid"
-    for(i = 0; i<size;i++){
-        imagePartHeight= Math.floor(imageHeight/size)*i
-        for(j = 0; j<size; j++){
-            if(j == size-1 && i == size-1){
-                console.log("ababa")
-            }else{
-                imagePartWidth=Math.floor(imageWidth/size)*j
-                var canvas = document.createElement("canvas")
-                canvas.style.marginRight="2px"
-                canvas.width = Math.floor(imageWidth/size)
-                canvas.height = Math.floor(imageHeight/size)
-                canvas.getContext('2d').drawImage(image, imagePartWidth, imagePartHeight, Math.floor(imageWidth/size), Math.floor(imageHeight/size),0,0, Math.floor(imageWidth/size),Math.floor(imageHeight/size))
-                console.log("rysuje kwadrat o punktach startowych "+imagePartWidth+" "+imagePartHeight)
-                area.appendChild(canvas)
-                canvasList.push(canvas)
-            }
-        }
-        var clearBoth = document.createElement("div")
-        clearBoth.style.margin="0 px"
-        clearBoth.style.clear="both"
-        area.appendChild(clearBoth)
-        imagePartWidth=Math.floor(imageWidth/size)
-        
-
+    emptyPart = {
+        x: size-1,
+        y: size-1
     }
-    document.body.appendChild(area)
-    console.log(canvasList)
-    console.log(imagePartHeight, imagePartWidth)
+    
+    for(let i = 0; i<size;i++){
+        for(let j = 0; j<size;j++){
+        var imagePart = {
+            xIndex: j*imagePartWidth,
+            yIndex: i*imagePartHeight,
+            correctXIndex: j,
+            correctYIndex: i,
+            generateImagePart: function(){
+                var canvas = document.createElement("canvas")
+                canvas.width = imagePartWidth
+                canvas.height = imagePartHeight
+                canvas.getContext('2d').drawImage(image, this.xIndex, this.yIndex, imageWidth/size,imageHeight/size,0,0, imageWidth/size,imageHeight/size)
+                canvas.style.left= this.xIndex+"px"
+                canvas.style.top = this.yIndex+"px"
+                canvas.addEventListener("click", this.changePosition)
+                area.appendChild(canvas)
+            },
+            thisCanvas: null,
+            changePosition: function(){
+               if(emptyPart.x==j+1 || emptyPart.x==j-1 || emptyPart.y==i-1 ||emptyPart.y==i+1){
+                    this.xIndex = emptyPart.x*imagePartWidth
+                    this.yIndex = emptyPart.y*imagePartHeight
+                    this.style.left = this.xIndex+"px"
+                    this.style.top = this.yIndex+"px"
+                    emptyPart.x = j
+                    emptyPart.y = i
+               }     
+            }, 
+        }
+        if(!(j == size-1 && i == size-1)){
+            imagePart.generateImagePart()  
+        }
+        imagePartTable.push(imagePart)
+        
+    }
+
+}
+    isImageGenerated=true
 }

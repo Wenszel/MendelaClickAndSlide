@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="style.css">
     <style>
         body{
+            background-color: antiquewhite;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -18,16 +19,25 @@
         .buttons{
             flex-direction: row;
         }
+        #area{
+            border: 1px black solid;
+        }
+        canvas{
+            position: fixed;
+        }
     </style>
+    <script src="js/shuffle.js"></script>
 </head>
 <body>
     <img src="zdjecie.png" style ="width: 200px; height: 200px;">
     <div class="buttons">
-    <button onclick="shuffle(3)">3x3</button>
-    <button onclick="shuffle(4)">4x4</button>
-    <button onclick="shuffle(5)">5x5</button>
-    <button onclick="shuffle(6)">6x6</button>
+    <button onclick="generatePuzzle(3)">3x3</button>
+    <button onclick="generatePuzzle(4)">4x4</button>
+    <button onclick="generatePuzzle(5)">5x5</button>
+    <button onclick="generatePuzzle(6)">6x6</button>
+    
 </div>
-    <script src="js/shuffle.js"></script>
+<div id="area"></div>
+    
 </body>
 </html>
