@@ -6,6 +6,14 @@
     <title>Document</title>
     <link rel="stylesheet" href="style.css">
     <style>
+        #preview{
+            overflow: hidden;
+            scroll-behavior: smooth;
+            width: 200px;
+            height: 200px;
+            display: flex;
+            flex-direction: row;
+        }
         .arrow{
             margin: 10px;
             width: 50px;
@@ -45,7 +53,7 @@
 <body>
     <div id="controlPanel">
         <img class="arrow" onclick="picture.changePicture(-1)" src="img/wlewo.png"></img>
-        <img src="img/img0.jpg" style ="width: 200px; height: 200px;" id="preview">
+        <div id="preview"><img src="img/img0.jpg" style ="width: 200px; height: 200px;" ></div>
         <img class="arrow"onclick="picture.changePicture(1)" src="img/wprawo.png"></img>
     </div>
     <div class="buttons">

@@ -16,7 +16,14 @@ var picture = {
         if(this.numberOfPicture>3){
             this.numberOfPicture = 0
         }
-        var preview = document.getElementById("preview")
+        var preview = document.querySelector("#preview > img")
+        var newImage = document.createElement("img")
+        newImage.src="img/img"+this.numberOfPicture+".jpg"
+        newImage.style.width= "200px"
+        newImage.style.height = "200px"
+        var previewBox = document.querySelector("#preview")
+        previewBox.appendChild(newImage)
+        previewBox.scrollTo((this.numberOfPicture*200),0)
         preview.src ="img/img"+this.numberOfPicture+".jpg"
     }
 }
