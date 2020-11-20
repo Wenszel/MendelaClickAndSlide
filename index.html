@@ -6,6 +6,17 @@
     <title>Document</title>
     <link rel="stylesheet" href="style.css">
     <style>
+        .arrow{
+            margin: 10px;
+            width: 50px;
+            height: 50px;
+        }
+        #controlPanel{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            height: 200px;
+        }
         body{
             background-color: antiquewhite;
             display: flex;
@@ -19,25 +30,32 @@
         .buttons{
             flex-direction: row;
         }
-        #area{
-            border: 1px black solid;
-        }
         canvas{
             position: fixed;
         }
+        #area{
+            left: 0;
+            top: 0;
+            position: absolute;
+            border: 1px solid black;
+        }
     </style>
-    <script src="js/shuffle.js"></script>
+    
 </head>
 <body>
-    <img src="zdjecie.png" style ="width: 200px; height: 200px;">
+    <div id="controlPanel">
+        <img class="arrow" onclick="picture.changePicture(-1)" src="img/wlewo.png"></img>
+        <img src="img/img0.jpg" style ="width: 200px; height: 200px;" id="preview">
+        <img class="arrow"onclick="picture.changePicture(1)" src="img/wprawo.png"></img>
+    </div>
     <div class="buttons">
-    <button onclick="generatePuzzle(3)">3x3</button>
-    <button onclick="generatePuzzle(4)">4x4</button>
-    <button onclick="generatePuzzle(5)">5x5</button>
-    <button onclick="generatePuzzle(6)">6x6</button>
+    <button onclick="playground.generatePlayground(3)">3x3</button>
+    <button onclick="playground.generatePlayground(4)">4x4</button>
+    <button onclick="playground.generatePlayground(5)">5x5</button>
+    <button onclick="playground.generatePlayground(6)">6x6</button>
     
 </div>
 <div id="area"></div>
-    
+<script src="js/shuffle.js"></script>
 </body>
 </html>
