@@ -119,6 +119,7 @@ var playground = {
             timer.resetTime()
         }else{
             timer.generateTimer()
+            timer.startTimer()
         }
         this.isGenerated = true
         picture.loadPicture()
@@ -177,7 +178,7 @@ var playground = {
             }
         }
         this.shufflePlayground()
-        timer.startTimer()
+        
         
     },
     findPossibleMoves: function(){
