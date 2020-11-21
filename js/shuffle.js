@@ -94,7 +94,7 @@ var playground = {
         }
         if(isWin){
             setTimeout(()=>{
-                alert("wygrałeś w czasie "+timer.returnTime())
+                nameOfWinner = prompt("Wygrałeś w czasie "+timer.returnTime()+" \nPodaj nazwę do zapisania wyniku:")
             },100)
         }
     },
@@ -208,4 +208,39 @@ var playground = {
             playground.emptyPart.yPosition= nextMove.yPosition
         }
     }      
+}
+var laderBoard={
+    topPlayers3:[],
+    topPlayers4:[],
+    topPlayers5:[],
+    topPlayers6:[],
+    laderBoardWindowElement:null,
+    openLaderBoard: function(){
+        let laderBoardWindow = document.createElement("div")
+        laderBoardWindow.style.zIndex=1
+        laderBoardWindow.style.backgroundColor="grey"
+        laderBoardWindow.style.height="500px"
+        laderBoardWindow.style.width="300px"
+        laderBoardWindow.style.position="relative"
+        laderBoardWindow.style.top="-200px"
+        let exitButton = document.createElement("button")
+        exitButton.textContent="X"
+        exitButton.style.borderRadius="50%"
+        exitButton.style.width="20px"
+        exitButton.style.height="20px"
+        exitButton.style.position="absolute"
+        exitButton.style.right="0px"
+        exitButton.style.top="0px"
+        document.body.style.opacity="0.5"
+        laderBoardWindow.style.opacity="1"
+        laderBoardWindow.appendChild(exitButton)
+        this.laderBoardWindowElement=laderBoardWindow
+        exitButton.onclick=this.closeLaderBoard
+        document.body.appendChild(laderBoardWindow)
+    },
+    closeLaderBoard: function(){
+        laderBoard.laderBoardWindowElement.style.display="none"
+        document.body.style.opacity="1"
+        
+    }
 }
