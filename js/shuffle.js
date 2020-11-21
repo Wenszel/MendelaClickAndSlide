@@ -36,39 +36,48 @@ var timer = {
     minutes: 0,
     secundes: 0,
     milisecundes:0,
-    startTimer: function(){
+    timerElement:null,
+    generateTimer: function(){
         var timer = document.createElement("div")
         timer.innerHTML = this.hours+":"+this.minutes+":"+this.secundes+":"+this.milisecundes
-        //timer.innerHTML = "chuj"
         document.querySelector("body").appendChild(timer)
+        this.timerElement = timer
+    },
+    startTimer: function(){
         setInterval(()=>{
             this.milisecundes++
             if(this.milisecundes==1000){
                 this.milisecundes=0
             }
-            timer.innerHTML =this.hours+":"+this.minutes+":"+this.secundes+":"+this.milisecundes
+            this.timerElement.innerHTML =this.hours+":"+this.minutes+":"+this.secundes+":"+this.milisecundes
         },1)
         setInterval(()=>{
             this.secundes++
             if(this.secundes==60){
                 this.secundes=0
             }
-            timer.innerHTML = this.hours+":"+this.minutes+":"+this.secundes+":"+this.milisecundes
+            this.timerElement.innerHTML = this.hours+":"+this.minutes+":"+this.secundes+":"+this.milisecundes
         },1000)
         setInterval(()=>{
             this.minutes++
             if(this.minutes==60){
                 this.minutes=0
             }
-            timer.innerHTML = this.hours+":"+this.minutes+":"+this.secundes+":"+this.milisecundes
+            this.timerElement.innerHTML = this.hours+":"+this.minutes+":"+this.secundes+":"+this.milisecundes
         },60000)
         setInterval(()=>{
             this.hours++
-            timer.innerHTML = this.hours+":"+this.minutes+":"+this.secundes+":"+this.milisecundes
+            this.timerElement.innerHTML = this.hours+":"+this.minutes+":"+this.secundes+":"+this.milisecundes
         },360000)
     },
     returnTime: function(){
         return this.hours+":"+this.minutes+":"+this.secundes+":"+this.milisecundes
+    },
+    resetTime: function(){
+        this.hours= 0
+    this.minutes= 0
+    this.secundes= 0
+    this.milisecundes=0
     }
 }
 var playground = {
@@ -81,6 +90,7 @@ var playground = {
         xPosition: null,
         yPosition: null
     },
+    isGenerated: false,
     winChecker: function(){
         var isWin = true
         for(i=0;i<playground.imagePartArray.length;i++){
@@ -94,17 +104,30 @@ var playground = {
         }
         if(isWin){
             setTimeout(()=>{
-                nameOfWinner = prompt("Wygrałeś w czasie "+timer.returnTime()+" \nPodaj nazwę do zapisania wyniku:")
+                let time = timer.returnTime()
+                nameOfWinner = prompt("Wygrałeś w czasie "+time+" \nPodaj nazwę do zapisania wyniku:")
+                document.cookie = document.cookie + nameOfWinner+" "+time+"\n"
             },100)
         }
     },
     generatePlayground: function(size){
+        if(this.isGenerated){
+            document.getElementById("area").innerHTML=" "
+            this.imagePartArray = []
+            this.emptyPart.xPosition= null
+            this.emptyPart.yPosition = null
+            timer.resetTime()
+        }else{
+            timer.generateTimer()
+        }
+        this.isGenerated = true
         picture.loadPicture()
         this.imagePartWidth = Math.floor(picture.pictureImage.width/size)
         this.imagePartHeight = Math.floor(picture.pictureImage.height/size)
         this.areaElement.style.width = this.imagePartWidth*size +"px"
         this.areaElement.style.height = this.imagePartHeight*size+"px"
         this.size = size
+
         for(var i = 0; i<size;i++){
             for(var j = 0; j<size;j++){
                 if(j!=size-1 || i!=size-1){
@@ -155,6 +178,7 @@ var playground = {
         }
         this.shufflePlayground()
         timer.startTimer()
+        
     },
     findPossibleMoves: function(){
         possibleMovesArray = []
@@ -223,6 +247,14 @@ var laderBoard={
         laderBoardWindow.style.width="300px"
         laderBoardWindow.style.position="relative"
         laderBoardWindow.style.top="-200px"
+        laderBoardWindow.textContent = document.cookie
+        for(i=3;i<7;i++){
+            let modeButton = document.createElement("button")
+            modeButton.textContent= i+"x"+i
+            modeButton.style.opacity="1"
+            laderBoardWindow.appendChild(modeButton)
+            
+        }
         let exitButton = document.createElement("button")
         exitButton.textContent="X"
         exitButton.style.borderRadius="50%"
@@ -233,6 +265,7 @@ var laderBoard={
         exitButton.style.top="0px"
         document.body.style.opacity="0.5"
         laderBoardWindow.style.opacity="1"
+       
         laderBoardWindow.appendChild(exitButton)
         this.laderBoardWindowElement=laderBoardWindow
         exitButton.onclick=this.closeLaderBoard
