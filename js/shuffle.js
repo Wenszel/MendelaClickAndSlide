@@ -75,9 +75,9 @@ var timer = {
     },
     resetTime: function(){
         this.hours= 0
-    this.minutes= 0
-    this.secundes= 0
-    this.milisecundes=0
+        this.minutes= 0
+        this.secundes= 0
+        this.milisecundes=0
     }
 }
 var playground = {
@@ -103,11 +103,15 @@ var playground = {
         }
         }
         if(isWin){
+           
             setTimeout(()=>{
                 let time = timer.returnTime()
                 nameOfWinner = prompt("Wygrałeś w czasie "+time+" \nPodaj nazwę do zapisania wyniku:")
                 document.cookie = document.cookie + nameOfWinner+" "+time+"\n"
+                
             },100)
+            timer.resetTime()
+            
         }
     },
     generatePlayground: function(size){
@@ -177,8 +181,12 @@ var playground = {
                 }
             }
         }
-        this.shufflePlayground()
-        
+        let numberOfMoves = Math.pow(this.size,3)
+        let counter = 0
+        do{
+            this.shufflePlayground(counter)
+            counter++
+        }while(counter<numberOfMoves)
         
     },
     findPossibleMoves: function(){
@@ -216,9 +224,8 @@ var playground = {
         }
         return possibleMovesArray
     },
-    shufflePlayground: function(){
-        let numberOfMoves = Math.pow(this.size,3)
-        for(let i = 0;i<numberOfMoves;i++){
+    shufflePlayground: function(counter){
+        setTimeout(()=>{
             let possibleMoves = this.findPossibleMoves()
             let nextMove = possibleMoves[Math.floor(Math.random()*possibleMoves.length)]
             let objectToMove = this.imagePartArray.find( i =>
@@ -231,8 +238,8 @@ var playground = {
             objectToMove.canvasImage.style.top = playground.emptyPart.yPosition+"px"
             playground.emptyPart.xPosition=  nextMove.xPosition
             playground.emptyPart.yPosition= nextMove.yPosition
-        }
-    }      
+            },10*counter)
+        }      
 }
 var laderBoard={
     topPlayers3:[],
