@@ -119,6 +119,7 @@ var playground = {
                                 imagePart.yPosition = parseInt(canvas.style.top)
                                 }
                             }
+                            this.canvasImage=canvas
                             playground.areaElement.appendChild(canvas)
                         },
 
@@ -134,32 +135,56 @@ var playground = {
         this.shufflePlayground()
         timer.startTimer()
     },
+    findPossibleMoves: function(){
+        possibleMovesArray = []
+        
+        if(playground.emptyPart.yPosition-playground.imagePartWidth>=0){
+            let possibleMoves = {
+                xPosition: playground.emptyPart.xPosition,
+                yPosition: playground.emptyPart.yPosition-playground.imagePartWidth
+            }
+            possibleMovesArray.push(possibleMoves)
+        } 
+        if(playground.emptyPart.yPosition+playground.imagePartWidth<=picture.pictureImage.width-playground.imagePartWidth)
+        { 
+            let possibleMoves = {
+                xPosition: playground.emptyPart.xPosition,
+                yPosition: playground.emptyPart.yPosition+playground.imagePartWidth
+            }
+            possibleMovesArray.push(possibleMoves)
+        }
+        if(playground.emptyPart.xPosition-playground.imagePartWidth>=0){
+            let possibleMoves = {
+                xPosition: playground.emptyPart.xPosition-playground.imagePartWidth,
+                yPosition: playground.emptyPart.yPosition,
+            }
+            possibleMovesArray.push(possibleMoves)
+        }
+        
+        if(playground.emptyPart.xPosition+playground.imagePartWidth<=picture.pictureImage.width-playground.imagePartWidth){
+            let possibleMoves = {
+                xPosition: playground.emptyPart.xPosition+playground.imagePartWidth,
+                yPosition: playground.emptyPart.yPosition
+            }
+            possibleMovesArray.push(possibleMoves)
+        }
+        return possibleMovesArray
+    },
     shufflePlayground: function(){
         let numberOfMoves = Math.pow(this.size,3)
-        let nextMove = {
-            xPosition: null,
-            yPosition: null,
-            setNextMove: ()=>{
-                let XorY = Math.floor(Math.random()) //dla 0 zmieniamy pozycji po X dla 1 po Y
-                let direction = Math.floor(Math.random())
-                if(XorY==0){
-                    this.yPosition = playground.emptyPart.yPosition
-                    if(direction==0){
-                        this.xPosition = playground.emptyPart.xPosition+playground.imagePartWidth
-                    }else{
-                        this.xPosition = playground.emptyPart.xPosition-playground.imagePartWidth
-                    }
-                }else{
-                    this.yPosition = playground.emptyPart.yPosition
-                    if(direction==0){
-                        this.xPosition = playground.emptyPart+playground.imagePartWidth
-                    }else{
-                        this.xPosition = playground.emptyPart-playground.imagePartWidth
-                    }
-                }
-                
-                
-            }
+        for(let i = 0;i<numberOfMoves;i++){
+            let possibleMoves = this.findPossibleMoves()
+            let nextMove = possibleMoves[Math.floor(Math.random()*possibleMoves.length)]
+            let objectToMove = this.imagePartArray.find( i =>
+                i.xPosition == nextMove.xPosition &&
+                i.yPosition == nextMove.yPosition
+            )
+            objectToMove.xPosition = playground.emptyPart.xPosition
+            objectToMove.yPosition = playground.emptyPart.yPosition
+            objectToMove.canvasImage.style.left = playground.emptyPart.xPosition+"px"
+            objectToMove.canvasImage.style.top = playground.emptyPart.yPosition+"px"
+            playground.emptyPart.xPosition=  nextMove.xPosition
+            playground.emptyPart.yPosition= nextMove.yPosition
         }
     }      
 }
