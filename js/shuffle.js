@@ -16,15 +16,19 @@ var picture = {
         if(this.numberOfPicture>3){
             this.numberOfPicture = 0
         }
-        var preview = document.querySelector("#preview > img")
         var newImage = document.createElement("img")
         newImage.src="img/img"+this.numberOfPicture+".jpg"
         newImage.style.width= "200px"
         newImage.style.height = "200px"
         var previewBox = document.querySelector("#preview")
-        previewBox.appendChild(newImage)
-        previewBox.scrollTo((this.numberOfPicture*200),0)
-        preview.src ="img/img"+this.numberOfPicture+".jpg"
+        if(action==1)previewBox.appendChild(newImage)
+      /*  if(action==-1){
+            previewBox.prepend(newImage)
+        }*/
+        setTimeout(()=>{
+            if(action==1)previewBox.scrollBy(200,0)
+        },100)
+        
     }
 }
 var timer = {
