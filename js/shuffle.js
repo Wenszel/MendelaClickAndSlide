@@ -66,6 +66,9 @@ var timer = {
             this.hours++
             timer.innerHTML = this.hours+":"+this.minutes+":"+this.secundes+":"+this.milisecundes
         },360000)
+    },
+    returnTime: function(){
+        return this.hours+":"+this.minutes+":"+this.secundes+":"+this.milisecundes
     }
 }
 var playground = {
@@ -77,6 +80,23 @@ var playground = {
     emptyPart: {
         xPosition: null,
         yPosition: null
+    },
+    winChecker: function(){
+        var isWin = true
+        for(i=0;i<playground.imagePartArray.length;i++){
+            if(playground.imagePartArray[i].correctXPosition == playground.imagePartArray[i].xPosition&&
+            playground.imagePartArray[i].correctYPosition == playground.imagePartArray[i].yPosition){
+            continue     
+        }else{
+            isWin = false
+            break        
+        }
+        }
+        if(isWin){
+            setTimeout(()=>{
+                alert("wygrałeś w czasie "+timer.returnTime())
+            },100)
+        }
     },
     generatePlayground: function(size){
         picture.loadPicture()
@@ -117,6 +137,7 @@ var playground = {
                                 playground.emptyPart.yPosition = imagePart.yPosition
                                 imagePart.xPosition = parseInt(canvas.style.left)
                                 imagePart.yPosition = parseInt(canvas.style.top)
+                                playground.winChecker()
                                 }
                             }
                             this.canvasImage=canvas
