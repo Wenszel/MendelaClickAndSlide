@@ -75,7 +75,7 @@ var timer = {
     },
     startTimer: function(){
         time = Date.now()
-           f = () =>{
+        f = () =>{
             actuallTime = Date.now()
             timePassed= actuallTime-time
             dateFromMs = new Date(timePassed)
@@ -107,7 +107,7 @@ var timer = {
             hour1.src = "img/cyferki/c"+timerTime[0]+".gif"
             timerTime = hours+":"+minutes+":"+secundes+"."+millisecundes
            }
-           setInterval(f,1)     
+           timerInterval = setInterval(f,1)     
     },
     returnTime: function(){
         return timerTime
@@ -115,9 +115,18 @@ var timer = {
     resetTimer: function(){
         time = Date.now()
         timerTime = ""
+        milisecunde3.src = "img/cyferki/c0.gif"
+        milisecunde2.src= "img/cyferki/c0.gif"
+        milisecunde1.src = "img/cyferki/c0.gif"
+        secunde2.src = "img/cyferki/c0.gif"
+        secunde1.src = "img/cyferki/c0.gif"
+        minute2.src = "img/cyferki/c0.gif"
+        minute1.src = "img/cyferki/c0.gif"
+        hour2.src = "img/cyferki/c0.gif"
+        hour1.src = "img/cyferki/c0.gif"
     },
     stopTimer: function(){
-        clearInterval(f)
+        clearInterval(timerInterval)
     }
 }
 var playground = {
@@ -143,13 +152,14 @@ var playground = {
         }
         }
         if(isWin){
+            timer.stopTimer()
             setTimeout(()=>{
                 let time = timer.returnTime()
                 nameOfWinner = prompt("Wygrałeś w czasie "+time+" \nPodaj nazwę do zapisania wyniku:")
                 document.cookie = document.cookie + nameOfWinner+" "+time+"\n"
                 
             },100)
-            timer.resetTimer()   
+            //timer.resetTimer()   
         }
     },
     generatePlayground: function(size){
@@ -159,6 +169,7 @@ var playground = {
             this.emptyPart.xPosition= null
             this.emptyPart.yPosition = null
             timer.resetTimer()
+            timer.stopTimer()
         }else{
             timer.generateTimer()
         }
@@ -191,8 +202,8 @@ var playground = {
                             canvas.style.top = this.yPosition+"px"
                             canvas.onclick= ()=> {
                                 if (
-                                ((playground.emptyPart.xPosition == imagePart.xPosition)&& ((playground.emptyPart.yPosition==imagePart.yPosition-playground.imagePartWidth)||(playground.emptyPart.yPosition==imagePart.yPosition+playground.imagePartWidth)))||
-                                ((playground.emptyPart.yPosition == imagePart.yPosition)&& ((playground.emptyPart.xPosition==imagePart.xPosition-playground.imagePartWidth)||(playground.emptyPart.xPosition==imagePart.xPosition+playground.imagePartWidth)))
+                                ((playground.emptyPart.xPosition == imagePart.xPosition)&&((playground.emptyPart.yPosition==imagePart.yPosition-playground.imagePartWidth)||(playground.emptyPart.yPosition==imagePart.yPosition+playground.imagePartWidth)))||
+                                ((playground.emptyPart.yPosition == imagePart.yPosition)&&((playground.emptyPart.xPosition==imagePart.xPosition-playground.imagePartWidth)||(playground.emptyPart.xPosition==imagePart.xPosition+playground.imagePartWidth)))
                                 ){
                                 
                                 canvas.style.left = playground.emptyPart.xPosition+"px"
@@ -207,7 +218,6 @@ var playground = {
                             this.canvasImage=canvas
                             playground.areaElement.appendChild(canvas)
                         },
-
                     }
                 this.imagePartArray.push(imagePart)
                 imagePart.generateImagePart()
