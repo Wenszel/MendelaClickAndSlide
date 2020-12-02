@@ -5,60 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        #preview{
-            overflow: hidden;
-            scroll-behavior: smooth;
-            width: 200px;
-            height: 200px;
-            display: flex;
-            flex-direction: row;
-        }
-        .arrow{
-            margin: 10px;
-            width: 50px;
-            height: 50px;
-        }
-        #controlPanel{
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            height: 200px;
-        }
-        body{
-            background-color: antiquewhite;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        body>button{
-            width: 100px;
-        }
-        button{
-            margin: 10px;
-            width: 50px;
-        }
-        .buttons{
-            flex-direction: row;
-        }
-        canvas{
-            position: fixed;
-        }
-        #area{
-            left: 0;
-            top: 0;
-            position: absolute;
-            border: 1px solid black;
-        }
-    </style>
-    
 </head>
 <body>
-    
     <div id="controlPanel">
         <img class="arrow" onclick="picture.changePicture(-1)" src="img/wlewo.png"></img>
         <div id="preview">
-            <img src="img/img0.jpg" style ="width: 200px; height: 200px;" >
+            <img src="img/img0.jpg">
         </div>
         <img class="arrow"onclick="picture.changePicture(1)" src="img/wprawo.png"></img>
     </div>
@@ -67,7 +19,6 @@
     <button onclick="playground.generatePlayground(4)">4x4</button>
     <button onclick="playground.generatePlayground(5)">5x5</button>
     <button onclick="playground.generatePlayground(6)">6x6</button>
-    
 </div>
 <button onclick="laderBoard.openLaderBoard()">Pokaż Ranking</button>
 <div id="area"></div>
