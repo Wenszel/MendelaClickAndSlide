@@ -6,7 +6,7 @@
     <title>Document</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body onload="laderboard.openLaderboard(3)">
     <div id="controlPanel">
         <img class="arrow" onclick="picture.changePicture(-1)" src="img/wlewo.png"></img>
         <div id="preview">
@@ -20,8 +20,15 @@
     <button onclick="playground.generatePlayground(5)">5x5</button>
     <button onclick="playground.generatePlayground(6)">6x6</button>
 </div>
-<button onclick="laderBoard.openLaderBoard()">Pokaż Ranking</button>
 <div id="area"></div>
+<div id="laderboard">
+    <h1>Ranking</h1>
+    <button onclick="laderboard.openLaderboard(3)">3x3</button>
+    <button onclick="laderboard.openLaderboard(4)">4x4</button>
+    <button onclick="laderboard.openLaderboard(5)">5x5</button>
+    <button onclick="laderboard.openLaderboard(6)">6x6</button>
+    <div id="laderboardResults"></div>
+</div>
 <script src="js/shuffle.js"></script>
 </body>
 </html>

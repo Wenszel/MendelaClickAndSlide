@@ -49,3 +49,18 @@ canvas{
     position: absolute;
     border: 1px solid black;
 }
+#laderboard{
+    text-align: center;
+    position: absolute;
+    height: 400px;
+    width: 300px;
+    margin: 10px;
+    background-color: #fdd8a8;
+    border: black 2px solid;
+    right: 0;
+    top: 0;
+}
+ol>li{
+    font-size: medium;
+    margin-top: 2px;
+}

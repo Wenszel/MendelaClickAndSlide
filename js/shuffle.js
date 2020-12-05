@@ -28,6 +28,7 @@ var picture = {
         setTimeout(()=>{
             if(action==1)previewBox.scrollBy(200,0)
         },100)    
+        laderboard.openLaderboard(3)
     }
 }
 var timer = {
@@ -156,8 +157,8 @@ var playground = {
             setTimeout(()=>{
                 let time = timer.returnTime()
                 nameOfWinner = prompt("Wygrałeś w czasie "+time+" \nPodaj nazwę do zapisania wyniku:")
-                document.cookie = document.cookie + nameOfWinner+" "+time+"\n"
-                
+                document.cookie = playground.size+""+picture.numberOfPicture+nameOfWinner+"="+time+";"
+                laderboard.openLaderboard(playground.size)
             },100)
             //timer.resetTimer()   
         }
@@ -286,45 +287,42 @@ var playground = {
         },10*counter)
     }      
 }
-var laderBoard={
-    topPlayers3:[],
-    topPlayers4:[],
-    topPlayers5:[],
-    topPlayers6:[],
-    laderBoardWindowElement:null,
-    openLaderBoard: function(){
-        let laderBoardWindow = document.createElement("div")
-        laderBoardWindow.style.zIndex=1
-        laderBoardWindow.style.backgroundColor="grey"
-        laderBoardWindow.style.height="500px"
-        laderBoardWindow.style.width="300px"
-        laderBoardWindow.style.position="relative"
-        laderBoardWindow.style.top="-200px"
-        laderBoardWindow.textContent = document.cookie
-        for(i=3;i<7;i++){
-            let modeButton = document.createElement("button")
-            modeButton.textContent= i+"x"+i
-            modeButton.style.opacity="1"
-            laderBoardWindow.appendChild(modeButton)    
+var laderboard={
+    openLaderboard: function(mode){
+        let counter = 0 //count laderboard elements to 10
+        let list = document.createElement("ol")
+        let results = laderboard.sortResults()
+        for(let i = 0; i<results.length; i++){
+            let modeOfResult = results[i].player.trim()[0]
+            let pictureOfResult = results[i].player.trim()[1]
+            //console.log(results[i].player)
+            let player = results[i].player.trim().slice(2)
+            console.log(modeOfResult+" "+pictureOfResult+" "+player)
+            let time = results[i].time
+            if(modeOfResult==mode && counter<10 && picture.numberOfPicture==pictureOfResult){
+                counter++
+                let li = document.createElement("li")
+                li.textContent=player+" - "+time
+                list.appendChild(li)
+            }
         }
-        let exitButton = document.createElement("button")
-        exitButton.textContent="X"
-        exitButton.style.borderRadius="50%"
-        exitButton.style.width="20px"
-        exitButton.style.height="20px"
-        exitButton.style.position="absolute"
-        exitButton.style.right="0px"
-        exitButton.style.top="0px"
-        document.body.style.opacity="0.5"
-        laderBoardWindow.style.opacity="1"
-       
-        laderBoardWindow.appendChild(exitButton)
-        this.laderBoardWindowElement=laderBoardWindow
-        exitButton.onclick=this.closeLaderBoard
-        document.body.appendChild(laderBoardWindow)
+        document.getElementById("laderboardResults").innerHTML=""
+        document.getElementById("laderboardResults").appendChild(list)
     },
-    closeLaderBoard: function(){
-        laderBoard.laderBoardWindowElement.style.display="none"
-        document.body.style.opacity="1" 
+    sortResults:function(){
+        let results = document.cookie.split(";")
+        let resultsObj = []
+        results.forEach((i)=>{
+            let result = i.split("=")
+            let resultObj = {
+                player: result[0],
+                time: result[1]
+            }
+            resultsObj.push(resultObj)
+        })
+        resultsObj = resultsObj.sort((a,b)=>{
+            return parseFloat(a.time.replaceAll(":","").replace(".",""))-parseFloat(b.time.replaceAll(":","").replace(".",""))
+        })
+        return resultsObj
     }
 }
