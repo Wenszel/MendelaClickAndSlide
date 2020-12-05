@@ -1,3 +1,5 @@
+//TODO: 1.Naprawic zegar przy porabanym zmienianiu zdjec i trybow (cos z funkcja timer.stop)
+//TODO: 2.Dokonczyc picture image slider
 var picture = {
     pictureImage: null,
     numberOfPicture:0,
@@ -9,6 +11,10 @@ var picture = {
         image.style.height = this.pictureHeight
     },
     changePicture: function(action){
+        var oldImage = document.createElement("img")
+        oldImage.src="img/img"+this.numberOfPicture+".jpg"
+        oldImage.style.width= "200px"
+        oldImage.style.height = "200px"
         this.numberOfPicture+=action
         if(this.numberOfPicture<0){
             this.numberOfPicture = 3
@@ -21,18 +27,33 @@ var picture = {
         newImage.style.width= "200px"
         newImage.style.height = "200px"
         var previewBox = document.querySelector("#preview")
-        if(action==1)previewBox.appendChild(newImage)
-      /*  if(action==-1){
-            previewBox.prepend(newImage)
-        }*/
+        previewBox.innerHTML=""
+        
+        if(action==1){
+            previewBox.appendChild(oldImage)
+            previewBox.appendChild(newImage)        
+        }
+        if(action==-1){
+            previewBox.appendChild(newImage)
+            previewBox.appendChild(oldImage)
+            previewBox.style.scrollBehavior = "auto"
+            previewBox.scrollBy(200,0)
+        }
+        previewBox.style.scrollBehavior = "smooth"
         setTimeout(()=>{
             if(action==1)previewBox.scrollBy(200,0)
+            if(action==-1)previewBox.scrollBy(-200,0)
+            document.querySelectorAll("controlPanel>button").disabled = true
         },100)    
-        laderboard.openLaderboard(3)
+        setTimeout(()=>{
+            previewBox.removeChild(oldImage)
+            laderboard.openLaderboard(3)
+            document.querySelectorAll("controlPanel>button").disabled = false
+        },500)
+        
     }
 }
 var timer = {
-    timerElement:null,
     generateTimer: function(){
         var timer = document.createElement("div")
         hour1 = document.createElement("img")
@@ -72,7 +93,6 @@ var timer = {
         timer.appendChild(milisecunde2)
         timer.appendChild(milisecunde3)
         document.body.appendChild(timer)
-        this.timerElement = timer 
     },
     startTimer: function(){
         time = Date.now()
@@ -289,15 +309,13 @@ var playground = {
 }
 var laderboard={
     openLaderboard: function(mode){
-        let counter = 0 //count laderboard elements to 10
+        let counter = 0
         let list = document.createElement("ol")
         let results = laderboard.sortResults()
         for(let i = 0; i<results.length; i++){
             let modeOfResult = results[i].player.trim()[0]
             let pictureOfResult = results[i].player.trim()[1]
-            //console.log(results[i].player)
             let player = results[i].player.trim().slice(2)
-            console.log(modeOfResult+" "+pictureOfResult+" "+player)
             let time = results[i].time
             if(modeOfResult==mode && counter<10 && picture.numberOfPicture==pictureOfResult){
                 counter++
