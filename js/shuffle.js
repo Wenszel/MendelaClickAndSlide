@@ -93,6 +93,7 @@ var timer = {
         timer.appendChild(milisecunde2)
         timer.appendChild(milisecunde3)
         document.body.appendChild(timer)
+        document.querySelectorAll(".buttons>button").disabled=false   
     },
     startTimer: function(){
         time = Date.now()
@@ -128,7 +129,8 @@ var timer = {
             hour1.src = "img/cyferki/c"+timerTime[0]+".gif"
             timerTime = hours+":"+minutes+":"+secundes+"."+millisecundes
            }
-           timerInterval = setInterval(f,1)     
+           document.querySelectorAll(".buttons>button").forEach((i)=>i.disabled=false)
+           timerInterval = setInterval(f,1)   
     },
     returnTime: function(){
         return timerTime
@@ -148,6 +150,7 @@ var timer = {
     },
     stopTimer: function(){
         clearInterval(timerInterval)
+        document.querySelectorAll(".buttons>button").forEach((i)=>i.disabled=true)
     }
 }
 var playground = {
@@ -193,7 +196,9 @@ var playground = {
             timer.stopTimer()
         }else{
             timer.generateTimer()
+            document.querySelectorAll(".buttons>button").forEach((i)=>i.disabled=true)
         }
+        
         this.isGenerated = true
         picture.loadPicture()
         this.imagePartWidth = Math.floor(picture.pictureImage.width/size)
