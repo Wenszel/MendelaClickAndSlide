@@ -13,22 +13,13 @@ var picture = {
     changePicture: function(action){
         var oldImage = document.createElement("img")
         oldImage.src="img/img"+this.numberOfPicture+".jpg"
-        oldImage.style.width= "200px"
-        oldImage.style.height = "200px"
         this.numberOfPicture+=action
-        if(this.numberOfPicture<0){
-            this.numberOfPicture = 3
-        }
-        if(this.numberOfPicture>3){
-            this.numberOfPicture = 0
-        }
+        if(this.numberOfPicture<0) this.numberOfPicture = 3
+        if(this.numberOfPicture>3) this.numberOfPicture = 0 
         var newImage = document.createElement("img")
         newImage.src="img/img"+this.numberOfPicture+".jpg"
-        newImage.style.width= "200px"
-        newImage.style.height = "200px"
         var previewBox = document.querySelector("#preview")
         previewBox.innerHTML=""
-        
         if(action==1){
             previewBox.appendChild(oldImage)
             previewBox.appendChild(newImage)        
@@ -49,8 +40,7 @@ var picture = {
             previewBox.removeChild(oldImage)
             laderboard.openLaderboard(3)
             document.querySelectorAll("controlPanel>button").disabled = false
-        },500)
-        
+        },500) 
     }
 }
 var timer = {
@@ -225,11 +215,10 @@ var playground = {
                             canvas.style.left= this.xPosition+"px"
                             canvas.style.top = this.yPosition+"px"
                             canvas.onclick= ()=> {
-                                if (
+                                if(
                                 ((playground.emptyPart.xPosition == imagePart.xPosition)&&((playground.emptyPart.yPosition==imagePart.yPosition-playground.imagePartWidth)||(playground.emptyPart.yPosition==imagePart.yPosition+playground.imagePartWidth)))||
                                 ((playground.emptyPart.yPosition == imagePart.yPosition)&&((playground.emptyPart.xPosition==imagePart.xPosition-playground.imagePartWidth)||(playground.emptyPart.xPosition==imagePart.xPosition+playground.imagePartWidth)))
-                                ){
-                                
+                                ){ 
                                 canvas.style.left = playground.emptyPart.xPosition+"px"
                                 canvas.style.top = playground.emptyPart.yPosition+"px"
                                 playground.emptyPart.xPosition = imagePart.xPosition
@@ -306,7 +295,6 @@ var playground = {
             objectToMove.canvasImage.style.top = playground.emptyPart.yPosition+"px"
             playground.emptyPart.xPosition=  nextMove.xPosition
             playground.emptyPart.yPosition= nextMove.yPosition
-            
         },10*counter)
     }      
 }
