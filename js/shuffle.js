@@ -1,22 +1,20 @@
-//TODO: 1.Naprawic zegar przy porabanym zmienianiu zdjec i trybow (cos z funkcja timer.stop)
-//TODO: 2.Dokonczyc picture image slider
 var picture = {
     pictureImage: null,
     numberOfPicture:0,
     loadPicture: function(){
-        var image = document.createElement("img")
+        var image = new Image()
         image.src = "img/img"+this.numberOfPicture+".jpg"
         this.pictureImage = image
         image.style.width = this.pictureWidth
         image.style.height = this.pictureHeight
     },
     changePicture: function(action){
-        var oldImage = document.createElement("img")
+        var oldImage = new Image()
         oldImage.src="img/img"+this.numberOfPicture+".jpg"
         this.numberOfPicture+=action
         if(this.numberOfPicture<0) this.numberOfPicture = 3
         if(this.numberOfPicture>3) this.numberOfPicture = 0 
-        var newImage = document.createElement("img")
+        var newImage = new Image()
         newImage.src="img/img"+this.numberOfPicture+".jpg"
         var previewBox = document.querySelector("#preview")
         previewBox.innerHTML=""
@@ -30,45 +28,44 @@ var picture = {
             previewBox.style.scrollBehavior = "auto"
             previewBox.scrollBy(200,0)
         }
-        previewBox.style.scrollBehavior = "smooth"
         setTimeout(()=>{
+            previewBox.style.scrollBehavior = "smooth"
             if(action==1)previewBox.scrollBy(200,0)
             if(action==-1)previewBox.scrollBy(-200,0)
-            document.querySelectorAll("#controlPanel>img").forEach((i)=>i.style.pointerEvents = 'none')
+            
         },100)    
         setTimeout(()=>{
             previewBox.removeChild(oldImage)
             laderboard.openLaderboard(3)
-            document.querySelectorAll("#controlPanel>img").forEach((i)=>i.style.pointerEvents = 'auto')
         },500) 
     }
 }
 var timer = {
     generateTimer: function(){
         var timer = document.createElement("div")
-        hour1 = document.createElement("img")
+        hour1 = new Image()
         hour1.src = "img/cyferki/c0.gif"
-        hour2 = document.createElement("img")
+        hour2 = new Image()
         hour2.src = "img/cyferki/c0.gif"
-        colon1 = document.createElement("img")
+        colon1 = new Image()
         colon1.src = "img/cyferki/colon.gif"
-        minute1 = document.createElement("img")
+        minute1 = new Image()
         minute1.src = "img/cyferki/c0.gif"
-        minute2 = document.createElement("img")
+        minute2 = new Image()
         minute2.src = "img/cyferki/c0.gif"
-        colon2 = document.createElement("img")
+        colon2 = new Image()
         colon2.src = "img/cyferki/colon.gif"
-        secunde1 = document.createElement("img")
+        secunde1 = new Image()
         secunde1.src = "img/cyferki/c0.gif"
-        secunde2= document.createElement("img")
+        secunde2= new Image()
         secunde2.src = "img/cyferki/c0.gif"
-        dot = document.createElement("img")
+        dot = new Image()
         dot.src = "img/cyferki/dot.gif"
-        milisecunde1= document.createElement("img")
+        milisecunde1= new Image()
         milisecunde1.src = "img/cyferki/c0.gif"
-        milisecunde2= document.createElement("img")
+        milisecunde2= new Image()
         milisecunde2.src = "img/cyferki/c0.gif"
-        milisecunde3= document.createElement("img") 
+        milisecunde3= new Image() 
         milisecunde3.src = "img/cyferki/c0.gif"
         timer.appendChild(hour1)
         timer.appendChild(hour2)
