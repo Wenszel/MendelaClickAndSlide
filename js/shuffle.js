@@ -150,7 +150,6 @@ var timer = {
     },
     stopTimer: function(){
         clearInterval(timerInterval)
-        document.querySelectorAll(".buttons>button").forEach((i)=>i.disabled=true)
     }
 }
 var playground = {
@@ -196,9 +195,8 @@ var playground = {
             timer.stopTimer()
         }else{
             timer.generateTimer()
-            document.querySelectorAll(".buttons>button").forEach((i)=>i.disabled=true)
         }
-        
+        document.querySelectorAll(".buttons>button").forEach((i)=>i.disabled=true)
         this.isGenerated = true
         picture.loadPicture()
         this.imagePartWidth = Math.floor(picture.pictureImage.width/size)
