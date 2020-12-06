@@ -34,12 +34,12 @@ var picture = {
         setTimeout(()=>{
             if(action==1)previewBox.scrollBy(200,0)
             if(action==-1)previewBox.scrollBy(-200,0)
-            document.querySelectorAll("controlPanel>button").disabled = true
+            document.querySelectorAll("#controlPanel>img").forEach((i)=>i.style.pointerEvents = 'none')
         },100)    
         setTimeout(()=>{
             previewBox.removeChild(oldImage)
             laderboard.openLaderboard(3)
-            document.querySelectorAll("controlPanel>button").disabled = false
+            document.querySelectorAll("#controlPanel>img").forEach((i)=>i.style.pointerEvents = 'auto')
         },500) 
     }
 }
