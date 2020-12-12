@@ -9,35 +9,24 @@ var picture = {
         image.style.height = this.pictureHeight
     },
     changePicture: function(action){
-        var oldImage = new Image()
-        oldImage.src="img/img"+this.numberOfPicture+".jpg"
         this.numberOfPicture+=action
-        if(this.numberOfPicture<0) this.numberOfPicture = 3
-        if(this.numberOfPicture>3) this.numberOfPicture = 0 
-        var newImage = new Image()
-        newImage.src="img/img"+this.numberOfPicture+".jpg"
         var previewBox = document.querySelector("#preview")
-        previewBox.innerHTML=""
-        if(action==1){
-            previewBox.appendChild(oldImage)
-            previewBox.appendChild(newImage)        
-        }
-        if(action==-1){
-            previewBox.appendChild(newImage)
-            previewBox.appendChild(oldImage)
+        if(this.numberOfPicture<0) {
+            this.numberOfPicture = 3
             previewBox.style.scrollBehavior = "auto"
-            previewBox.scrollBy(200,0)
+            previewBox.scrollLeft = 800
         }
-        setTimeout(()=>{
-            previewBox.style.scrollBehavior = "smooth"
-            if(action==1)previewBox.scrollBy(200,0)
-            if(action==-1)previewBox.scrollBy(-200,0)
-            
-        },100)    
-        setTimeout(()=>{
-            previewBox.removeChild(oldImage)
-            laderboard.openLaderboard(3)
-        },500) 
+        previewBox.style.scrollBehavior = "smooth"
+        if(action==1)previewBox.scrollBy(200,0)
+        if(action==-1)previewBox.scrollBy(-200,0)
+        if(this.numberOfPicture>3){ 
+            this.numberOfPicture = 0 
+            previewBox.style.scrollBehavior = "auto"
+            setTimeout(()=>{
+                previewBox.scrollLeft = 0
+            },200)
+        }
+        laderboard.openLaderboard(3)
     }
 }
 var timer = {
@@ -165,11 +154,35 @@ var playground = {
             timer.stopTimer()
             setTimeout(()=>{
                 let time = timer.returnTime()
-                nameOfWinner = prompt("Wygrałeś w czasie "+time+" \nPodaj nazwę do zapisania wyniku:")
-                document.cookie = playground.size+""+picture.numberOfPicture+nameOfWinner+"="+time+";"
-                laderboard.openLaderboard(playground.size)
+                let overlay = document.createElement("div")
+                overlay.classList.add("overlay")
+                let overlayPrompt = document.createElement("div")
+                overlayPrompt.classList.add("overlay-prompt")
+                let overlayText = document.createElement("div")
+                overlayText.textContent= "Wygrałeś w czasie "+time
+                let overlayLabel = document.createElement("label")
+                overlayLabel.textContent = "Podaj swoją nazwę użytkownika"
+                let overlayNameInput = document.createElement("input")
+                let overlayButton = document.createElement("button")
+                overlayButton.textContent="OK"
+                overlayButton.onclick = ()=>{
+                    document.body.removeChild(overlay)
+                    document.cookie = playground.size+""+picture.numberOfPicture+overlayNameInput.value+"="+time+";"
+                    laderboard.openLaderboard(playground.size)
+                }
+                overlayNameInput.addEventListener("keyup", function(event){
+                    if (event.keyCode === 13) {
+                        event.preventDefault();
+                        overlayButton.click();
+                    }
+                })
+                overlayPrompt.appendChild(overlayText)
+                overlayPrompt.appendChild(overlayLabel)
+                overlayPrompt.appendChild(overlayNameInput)
+                overlayPrompt.appendChild(overlayButton)
+                overlay.appendChild(overlayPrompt)
+                document.body.appendChild(overlay)
             },100)
-            //timer.resetTimer()   
         }
     },
     generatePlayground: function(size){
@@ -216,13 +229,14 @@ var playground = {
                                 ((playground.emptyPart.xPosition == imagePart.xPosition)&&((playground.emptyPart.yPosition==imagePart.yPosition-playground.imagePartWidth)||(playground.emptyPart.yPosition==imagePart.yPosition+playground.imagePartWidth)))||
                                 ((playground.emptyPart.yPosition == imagePart.yPosition)&&((playground.emptyPart.xPosition==imagePart.xPosition-playground.imagePartWidth)||(playground.emptyPart.xPosition==imagePart.xPosition+playground.imagePartWidth)))
                                 ){ 
-                                canvas.style.left = playground.emptyPart.xPosition+"px"
-                                canvas.style.top = playground.emptyPart.yPosition+"px"
-                                playground.emptyPart.xPosition = imagePart.xPosition
-                                playground.emptyPart.yPosition = imagePart.yPosition
-                                imagePart.xPosition = parseInt(canvas.style.left)
-                                imagePart.yPosition = parseInt(canvas.style.top)
-                                playground.winChecker()
+                                    canvas.style.transition = "all ease-in-out 0.5s"
+                                    canvas.style.left = playground.emptyPart.xPosition+"px"
+                                    canvas.style.top = playground.emptyPart.yPosition+"px"
+                                    playground.emptyPart.xPosition = imagePart.xPosition
+                                    playground.emptyPart.yPosition = imagePart.yPosition
+                                    imagePart.xPosition = parseInt(canvas.style.left)
+                                    imagePart.yPosition = parseInt(canvas.style.top)
+                                    playground.winChecker()
                                 }
                             }
                             this.canvasImage=canvas
@@ -310,6 +324,8 @@ var laderboard={
                 let li = document.createElement("li")
                 li.textContent=player+" - "+time
                 list.appendChild(li)
+            }else if(modeOfResult==mode && counter>=10 && picture.numberOfPicture==pictureOfResult){
+                document.cookie = modeOfResult+""+pictureOfResult+""+player+"= ;"+"expires = Thu Thu, 01 Jan 1970 00:00:00 GMT"
             }
         }
         document.getElementById("laderboardResults").innerHTML=""
