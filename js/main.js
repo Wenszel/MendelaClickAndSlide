@@ -229,14 +229,72 @@ var playground = {
                                 ((playground.emptyPart.xPosition == imagePart.xPosition)&&((playground.emptyPart.yPosition==imagePart.yPosition-playground.imagePartWidth)||(playground.emptyPart.yPosition==imagePart.yPosition+playground.imagePartWidth)))||
                                 ((playground.emptyPart.yPosition == imagePart.yPosition)&&((playground.emptyPart.xPosition==imagePart.xPosition-playground.imagePartWidth)||(playground.emptyPart.xPosition==imagePart.xPosition+playground.imagePartWidth)))
                                 ){ 
-                                    canvas.style.transition = "all ease-in-out 0.5s"
-                                    canvas.style.left = playground.emptyPart.xPosition+"px"
-                                    canvas.style.top = playground.emptyPart.yPosition+"px"
-                                    playground.emptyPart.xPosition = imagePart.xPosition
-                                    playground.emptyPart.yPosition = imagePart.yPosition
-                                    imagePart.xPosition = parseInt(canvas.style.left)
-                                    imagePart.yPosition = parseInt(canvas.style.top)
-                                    playground.winChecker()
+                                    if(document.getElementById("animations-js").checked == true){
+                                        canvas.style.transition = "none"
+                                        let leftShift = playground.emptyPart.xPosition-imagePart.xPosition
+                                        let topShift = playground.emptyPart.yPosition-imagePart.yPosition
+                                        let leftShiftCounter = 0
+                                        let topShiftCounter = 0
+                                        var imagePartAnimation = setInterval(frame, 1/10);
+                                        function frame() {
+                                        playground.emptyPart.xPosition = imagePart.xPosition
+                                        playground.emptyPart.yPosition = imagePart.yPosition
+                                        if(leftShift==0){
+                                            if (Math.abs(topShiftCounter)>=Math.abs(topShift)) {
+                                                clearInterval(imagePartAnimation);
+                                                
+                                                imagePart.xPosition = parseInt(canvas.style.left)
+                                                imagePart.yPosition = parseInt(canvas.style.top)
+                                                playground.winChecker()
+                                              } else {
+                                                if(topShift>0){
+                                                    topShiftCounter+=1
+                                                    canvas.style.top = (parseInt(canvas.style.top)+1)+"px"
+                                                }
+                                                if(topShift<0){
+                                                    topShiftCounter-=1;
+                                                    canvas.style.top = (parseInt(canvas.style.top)-1)+"px"
+                                                }  
+                                              }
+                                        }else if(topShift == 0 ){
+                                            if (Math.abs(leftShiftCounter)>=Math.abs(leftShift)) {
+                                                clearInterval(imagePartAnimation);
+                                                imagePart.xPosition = parseInt(canvas.style.left)
+                                                imagePart.yPosition = parseInt(canvas.style.top)
+                                                playground.winChecker()
+                                              } else {
+                                                  if(leftShift>0){
+                                                      leftShiftCounter+=1;
+                                                      canvas.style.left = (parseInt(canvas.style.left)+1)+"px"
+                                                    }
+                                                  if(leftShift<0){
+                                                    leftShiftCounter-=1;
+                                                    canvas.style.left = (parseInt(canvas.style.left)-1)+"px"
+                                                  }
+                                              }
+                                        }
+                                       
+                                      }
+                                    }
+                                    else if(document.getElementById("animations-css").checked == true){
+                                        canvas.style.transition = "all ease-in-out 0.5s"
+                                        canvas.style.left = playground.emptyPart.xPosition+"px"
+                                        canvas.style.top = playground.emptyPart.yPosition+"px"
+                                        playground.emptyPart.xPosition = imagePart.xPosition
+                                        playground.emptyPart.yPosition = imagePart.yPosition
+                                        imagePart.xPosition = parseInt(canvas.style.left)
+                                        imagePart.yPosition = parseInt(canvas.style.top)
+                                        playground.winChecker()
+                                    }else if(document.getElementById("animations-off").checked == true){
+                                        canvas.style.transition = "none"
+                                        canvas.style.left = playground.emptyPart.xPosition+"px"
+                                        canvas.style.top = playground.emptyPart.yPosition+"px"
+                                        playground.emptyPart.xPosition = imagePart.xPosition
+                                        playground.emptyPart.yPosition = imagePart.yPosition
+                                        imagePart.xPosition = parseInt(canvas.style.left)
+                                        imagePart.yPosition = parseInt(canvas.style.top)
+                                        playground.winChecker()
+                                    }                         
                                 }
                             }
                             this.canvasImage=canvas
