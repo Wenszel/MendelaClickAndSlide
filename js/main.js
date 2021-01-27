@@ -242,7 +242,6 @@ var playground = {
                                         if(leftShift==0){
                                             if (Math.abs(topShiftCounter)>=Math.abs(topShift)) {
                                                 clearInterval(imagePartAnimation);
-                                                
                                                 imagePart.xPosition = parseInt(canvas.style.left)
                                                 imagePart.yPosition = parseInt(canvas.style.top)
                                                 playground.winChecker()
